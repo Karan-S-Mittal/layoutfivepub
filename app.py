@@ -1,7 +1,6 @@
 import os
 from werkzeug.exceptions import HTTPException
 import dash
-import dash
 
 external_stylesheets = []
 
