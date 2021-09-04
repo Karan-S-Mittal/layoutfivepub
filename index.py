@@ -11,18 +11,16 @@ import callbacks
 server = app.server
 
 # Base layout
-app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),
-    html.Div(id='page-content')
-])
+app.layout = html.Div(
+    [dcc.Location(id="url", refresh=False), html.Div(id="page-content")]
+)
 
 
 # Routing
-@app.callback(Output('page-content', 'children'),
-              [Input('url', 'pathname')])
+@app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
     return layout1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run_server(debug=True)

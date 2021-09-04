@@ -567,7 +567,7 @@ layout1 = html.Main(
         html.Div(
             className="block container",
             children=[
-                html.H2("New Element"),
+                html.H4("New Element"),
                 dcc.Tabs(
                     id="tabs",
                     content_className="TabGroupContainer",
@@ -638,6 +638,7 @@ layout1 = html.Main(
                                                         {
                                                             "id": "Value",
                                                             "name": "Input",
+                                                            "presentation": "dropdown",
                                                             "editable": True,
                                                         },
                                                         {
@@ -652,7 +653,59 @@ layout1 = html.Main(
                                                         {
                                                             "Description": "Manufacturer",
                                                             "Value": "Timken",
-                                                            "id_name": "bearing_centres",
+                                                            "id_name": "bearing_manufacturer",
+                                                        },
+                                                        {
+                                                            "Description": "Seal Type",
+                                                            "Value": "standard",
+                                                            "id_name": "bearing_seal_type",
+                                                        },
+                                                        {
+                                                            "Description": "Design life (hrs)",
+                                                            "Value": 100000,
+                                                            "id_name": "bearing_design_hrs",
+                                                        },
+                                                        {
+                                                            "Description": "Stress concentration",
+                                                            "Value": 3,
+                                                            "id_name": "bearing_stress_k",
+                                                        },
+                                                    ],
+                                                    dropdown_conditional=[
+                                                        {
+                                                            "if": {
+                                                                "column_id": "Value",
+                                                                "filter_query": "{id_name} eq 'bearing_manufacturer'",
+                                                            },
+                                                            "clearable": False,
+                                                            "options": [
+                                                                {
+                                                                    "label": i,
+                                                                    "value": i,
+                                                                }
+                                                                for i in [
+                                                                    "SKF",
+                                                                    "Timken",
+                                                                    "FAG",
+                                                                ]
+                                                            ],
+                                                        },
+                                                        {
+                                                            "if": {
+                                                                "column_id": "Value",
+                                                                "filter_query": "{id_name} eq 'bearing_seal_type'",
+                                                            },
+                                                            "clearable": False,
+                                                            "options": [
+                                                                {
+                                                                    "label": i,
+                                                                    "value": i,
+                                                                }
+                                                                for i in [
+                                                                    "standard",
+                                                                    "double labrynth",
+                                                                ]
+                                                            ],
                                                         },
                                                     ],
                                                 ),
@@ -728,6 +781,7 @@ layout1 = html.Main(
                                                         {
                                                             "id": "Value",
                                                             "name": "Input",
+                                                            "presentation": "dropdown",
                                                             "editable": True,
                                                         },
                                                         {
@@ -740,12 +794,78 @@ layout1 = html.Main(
                                                     # hidden_columns = ['id_name'],
                                                     data=[
                                                         {
-                                                            "Description": "Manufacturer",
-                                                            "Value": "Timken",
-                                                            "id_name": "bearing_centres",
+                                                            "Description": "Material",
+                                                            "Value": "K1045",
+                                                            "id_name": "shaft_material",
+                                                        },
+                                                        {
+                                                            "Description": "Yield Stress(Mpa)",
+                                                            "Value": 800,
+                                                            "id_name": "shaft_yield",
+                                                        },
+                                                        {
+                                                            "Description": "Ultimate Stress(Mpa)",
+                                                            "Value": 1000,
+                                                            "id_name": "shaft_ultimate",
+                                                        },
+                                                        {
+                                                            "Description": "Endurance Stress(Mpa)",
+                                                            "Value": 1000,
+                                                            "id_name": "shaft_endurance",
+                                                        },
+                                                        {
+                                                            "Description": "Maximum deflection 1",
+                                                            "Value": 2000,
+                                                            "id_name": "shaft_max_deflection",
+                                                        },
+                                                        {
+                                                            "Description": "Safety Factor",
+                                                            "Value": 1.2,
+                                                            "id_name": "shaft_safety_factor",
+                                                        },
+                                                        {
+                                                            "Description": "Design method",
+                                                            "Value": "AS1403",
+                                                            "id_name": "shaft_design_method",
                                                         },
                                                     ],
-                                                ),
+                                                    dropdown_conditional=[
+                                                        {
+                                                            "if": {
+                                                                "column_id": "Value",
+                                                                "filter_query": "{id_name} eq 'shaft_material'",
+                                                            },
+                                                            "clearable": False,
+                                                            "options": [
+                                                                {
+                                                                    "label": i,
+                                                                    "value": i,
+                                                                }
+                                                                for i in [
+                                                                    "K1045",
+                                                                    "4140",
+                                                                ]
+                                                            ],
+                                                        },
+                                                        {
+                                                            "if": {
+                                                                "column_id": "Value",
+                                                                "filter_query": "{id_name} eq 'shaft_design_method'",
+                                                            },
+                                                            "clearable": False,
+                                                            "options": [
+                                                                {
+                                                                    "label": i,
+                                                                    "value": i,
+                                                                }
+                                                                for i in [
+                                                                    "AS1403",
+                                                                    "DIN",
+                                                                ]
+                                                            ],
+                                                        },
+                                                    ],
+                                                )
                                             ],
                                         ),
                                     ],
@@ -754,7 +874,7 @@ layout1 = html.Main(
                         ),
                         ## Hub ############################################################################################################
                         dcc.Tab(
-                            label="Shaft",
+                            label="Hub",
                             children=[
                                 html.Div(
                                     className="Container",
@@ -775,68 +895,7 @@ layout1 = html.Main(
                                                 "display": "flex",
                                                 "justify-content": "center",
                                             },
-                                            children=[
-                                                dash_table.DataTable(
-                                                    id="shaft_inputs",
-                                                    editable=True,
-                                                    # width = '75%',
-                                                    style_table={
-                                                        "width": "auto",
-                                                        # 'textAlign': 'center',
-                                                        # 'overflowY': 'scroll',
-                                                        "border": "thin lightgrey solid",
-                                                    },
-                                                    style_cell={
-                                                        "textAlign": "center",
-                                                        "backgroundColor": "rgb(255, 255, 255)",
-                                                        "font-family": "sans-serif",
-                                                        "width": "7%",
-                                                    },
-                                                    style_cell_conditional=[
-                                                        {
-                                                            "if": {
-                                                                "column_id": "id_name"
-                                                            },
-                                                            "display": "None",
-                                                        },
-                                                    ],
-                                                    style_data_conditional=[
-                                                        {
-                                                            "if": {
-                                                                "column_editable": True
-                                                            },
-                                                            "color": "rgb(0, 0, 230)",
-                                                            "background-color": "var(--color-off-white)",
-                                                        },
-                                                    ],
-                                                    columns=(
-                                                        {
-                                                            "id": "Description",
-                                                            "name": "Description",
-                                                            "editable": False,
-                                                        },
-                                                        {
-                                                            "id": "Value",
-                                                            "name": "Input",
-                                                            "editable": True,
-                                                        },
-                                                        {
-                                                            "id": "id_name",
-                                                            "name": "id_name",
-                                                            "editable": True,
-                                                        },
-                                                    ),
-                                                    # IF YOU UPDATE THIS YOU UPDATE THE SHAFTDESIGN.PY CODE
-                                                    # hidden_columns = ['id_name'],
-                                                    data=[
-                                                        {
-                                                            "Description": "Manufacturer",
-                                                            "Value": "Timken",
-                                                            "id_name": "bearing_centres",
-                                                        },
-                                                    ],
-                                                ),
-                                            ],
+                                            children=[],
                                         ),
                                     ],
                                 ),
@@ -851,7 +910,7 @@ layout1 = html.Main(
             style={"fontsize": 30, "textAlign": "center", "justify-content": "center"},
             children=[
                 html.Button(
-                    id="calc-bending-moment",
+                    id="new_element_calculator",
                     n_clicks=0,
                     children="Calculate",
                     style={
@@ -871,7 +930,7 @@ layout1 = html.Main(
                     className="GroupContainer",
                     children=[
                         html.H4(
-                            "Preliminary Component Selection Results",
+                            "Results",
                             style={
                                 "textAlign": "center",
                                 "textAlign": "center",
@@ -888,15 +947,7 @@ layout1 = html.Main(
                             },
                             children=[
                                 html.Div(
-                                    id="hub-results-table",
-                                    style={
-                                        "margin-bottom": "10px",
-                                        "display": "flex",
-                                        "justify-content": "center",
-                                    },
-                                ),
-                                html.Div(
-                                    id="bearing-results-table",
+                                    id="shaft-results-table",
                                     style={
                                         "margin-bottom": "10px",
                                         "display": "flex",
@@ -908,18 +959,6 @@ layout1 = html.Main(
                     ],
                 ),
             ],
-        ),
-        html.Div(
-            id="current-housing-data-for-storage",
-            style={
-                "display": "none",
-            },
-        ),
-        html.Div(
-            id="current-hub-data-for-storage",
-            style={
-                "display": "none",
-            },
         ),
         html.Div(
             className="block container",
