@@ -2,12 +2,12 @@
 
 import dash_core_components as dcc
 import dash_html_components as html
-from dash_html_components.H4 import H4
 import dash_table
 
 # from textwrap import dedent as s
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output
+
 from app import app
 from text_store import *
 
@@ -569,7 +569,7 @@ layout1 = html.Main(
             children=[
                 html.H4("New Element"),
                 dcc.Tabs(
-                    id="tabs",
+                    id="new_element",
                     content_className="TabGroupContainer",
                     children=[
                         ## Bearing #########################################################################################################
@@ -638,8 +638,8 @@ layout1 = html.Main(
                                                         {
                                                             "id": "Value",
                                                             "name": "Input",
-                                                            "presentation": "dropdown",
                                                             "editable": True,
+                                                            "presentation": "dropdown",
                                                         },
                                                         {
                                                             "id": "id_name",
@@ -799,31 +799,6 @@ layout1 = html.Main(
                                                             "id_name": "shaft_material",
                                                         },
                                                         {
-                                                            "Description": "Yield Stress(Mpa)",
-                                                            "Value": 800,
-                                                            "id_name": "shaft_yield",
-                                                        },
-                                                        {
-                                                            "Description": "Ultimate Stress(Mpa)",
-                                                            "Value": 1000,
-                                                            "id_name": "shaft_ultimate",
-                                                        },
-                                                        {
-                                                            "Description": "Endurance Stress(Mpa)",
-                                                            "Value": 1000,
-                                                            "id_name": "shaft_endurance",
-                                                        },
-                                                        {
-                                                            "Description": "Maximum deflection 1",
-                                                            "Value": 2000,
-                                                            "id_name": "shaft_max_deflection",
-                                                        },
-                                                        {
-                                                            "Description": "Safety Factor",
-                                                            "Value": 1.2,
-                                                            "id_name": "shaft_safety_factor",
-                                                        },
-                                                        {
                                                             "Description": "Design method",
                                                             "Value": "AS1403",
                                                             "id_name": "shaft_design_method",
@@ -865,7 +840,87 @@ layout1 = html.Main(
                                                             ],
                                                         },
                                                     ],
-                                                )
+                                                ),
+                                                dash_table.DataTable(
+                                                    id="shaft_inputs_1",
+                                                    editable=True,
+                                                    # width = '75%',
+                                                    style_table={
+                                                        "width": "auto",
+                                                        # 'textAlign': 'center',
+                                                        # 'overflowY': 'scroll',
+                                                        "border": "thin lightgrey solid",
+                                                    },
+                                                    style_cell={
+                                                        "textAlign": "center",
+                                                        "backgroundColor": "rgb(255, 255, 255)",
+                                                        "font-family": "sans-serif",
+                                                        "width": "7%",
+                                                    },
+                                                    style_cell_conditional=[
+                                                        {
+                                                            "if": {
+                                                                "column_id": "id_name"
+                                                            },
+                                                            "display": "None",
+                                                        },
+                                                    ],
+                                                    style_data_conditional=[
+                                                        {
+                                                            "if": {
+                                                                "column_editable": True
+                                                            },
+                                                            "color": "rgb(0, 0, 230)",
+                                                            "background-color": "var(--color-off-white)",
+                                                        },
+                                                    ],
+                                                    columns=(
+                                                        {
+                                                            "id": "Description",
+                                                            "name": "Description",
+                                                            "editable": False,
+                                                        },
+                                                        {
+                                                            "id": "Value",
+                                                            "name": "Input",
+                                                            "editable": True,
+                                                        },
+                                                        {
+                                                            "id": "id_name",
+                                                            "name": "id_name",
+                                                            "editable": True,
+                                                        },
+                                                    ),
+                                                    # IF YOU UPDATE THIS YOU UPDATE THE SHAFTDESIGN.PY CODE
+                                                    # hidden_columns = ['id_name'],
+                                                    data=[
+                                                        {
+                                                            "Description": "Yield Stress(Mpa)",
+                                                            "Value": 800,
+                                                            "id_name": "shaft_yield",
+                                                        },
+                                                        {
+                                                            "Description": "Ultimate Stress(Mpa)",
+                                                            "Value": 1000,
+                                                            "id_name": "shaft_ultimate",
+                                                        },
+                                                        {
+                                                            "Description": "Endurance Stress(Mpa)",
+                                                            "Value": 1000,
+                                                            "id_name": "shaft_endurance",
+                                                        },
+                                                        {
+                                                            "Description": "Maximum deflection 1",
+                                                            "Value": 2000,
+                                                            "id_name": "shaft_max_deflection",
+                                                        },
+                                                        {
+                                                            "Description": "Safety Factor",
+                                                            "Value": 1.2,
+                                                            "id_name": "shaft_safety_factor",
+                                                        },
+                                                    ],
+                                                ),
                                             ],
                                         ),
                                     ],

@@ -128,14 +128,21 @@ def Calculate_Automatic_Results(
 @app.callback(
     [Output("shaft-results-table", "children")],
     [Input("new_element_calculator", "n_clicks")],
-    [State("shaft_inputs", "data")],
+    [State("shaft_inputs", "data"), State("shaft_inputs_1", "data")],
 )
-def shaft_value_calculator(n_clicks, data):
-    yield_value = [i["Value"] for i in data if i["id_name"] == "shaft_yield"][0]
-    ultimate_value = [i["Value"] for i in data if i["id_name"] == "shaft_ultimate"][0]
-    endurance_value = [i["Value"] for i in data if i["id_name"] == "shaft_endurance"][0]
-    
-    material = [i["Value"] for i in data if i["id_name"] == "shaft_material"]
+def shaft_value_calculator(n_clicks, dropdown_data, numerical_data):
+    # print(dropdown_data, numerical_data)
+    yield_value = [i["Value"] for i in numerical_data if i["id_name"] == "shaft_yield"][
+        0
+    ]
+    ultimate_value = [
+        i["Value"] for i in numerical_data if i["id_name"] == "shaft_ultimate"
+    ][0]
+    endurance_value = [
+        i["Value"] for i in numerical_data if i["id_name"] == "shaft_endurance"
+    ][0]
+
+    material = [i["Value"] for i in dropdown_data if i["id_name"] == "shaft_material"]
 
     if yield_value == 800:
         yield_value = 644
@@ -145,8 +152,6 @@ def shaft_value_calculator(n_clicks, data):
         endurance_value = 350
 
     result = dash_table.DataTable(
-        id="shaft_inputs",
-        editable=True,
         # width = '75%',
         style_table={
             "width": "auto",
