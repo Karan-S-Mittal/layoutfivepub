@@ -143,13 +143,15 @@ def shaft_value_calculator(n_clicks, dropdown_data, numerical_data):
     ][0]
 
     material = [i["Value"] for i in dropdown_data if i["id_name"] == "shaft_material"]
-
     if yield_value == 800:
         yield_value = 644
-    if ultimate_value == 1000:
-        ultimate_value = 700
     if endurance_value == 450:
         endurance_value = 350
+
+    if material[0] == "K1045":
+        ultimate_value = 700
+    elif material[0] == "4140":
+        ultimate_value = 1000
 
     result = dash_table.DataTable(
         # width = '75%',
